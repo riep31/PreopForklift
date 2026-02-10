@@ -144,6 +144,7 @@
         .answer-cell {
             text-align: center;
             font-weight: bold;
+            font-size: 18px;
         }
         
         @media print {
@@ -229,7 +230,7 @@
                <thead>
     <tr>
         <th rowspan="2" style="background-color:#4CAF50; color:white; text-align:center; vertical-align:middle;">
-            No.
+            NO.
         </th>
         <th style="background-color:#4CAF50; color:white; text-align:center;">
             Tanggal pengecekan/ shift 
@@ -420,13 +421,20 @@
                 const tidakCell = document.getElementById(`q${questionNum}_tidak`);
                 
                 if (yaCell && tidakCell) {
-                    if (answer.toLowerCase() === 'ya') {
-                        yaCell.textContent = '✓';
+                    const decodedAnswer = decodeURIComponent(answer).trim();
+                    
+                    // Cek apakah jawaban adalah centang (✔️) atau mengandung kata "ya"
+                    if (decodedAnswer === '✔️' || decodedAnswer === '✔' || decodedAnswer.toLowerCase() === 'ya') {
+                        yaCell.textContent = '✔️';
                         tidakCell.textContent = '-';
-                    } else if (answer.toLowerCase() === 'tidak') {
+                    } 
+                    // Cek apakah jawaban adalah silang (✖) atau mengandung kata "tidak"
+                    else if (decodedAnswer === '✖' || decodedAnswer === 'X' || decodedAnswer === 'x' || decodedAnswer.toLowerCase() === 'tidak') {
                         yaCell.textContent = '-';
-                        tidakCell.textContent = '✓';
-                    } else {
+                        tidakCell.textContent = '✖';
+                    } 
+                    // Jika kosong atau tidak ada jawaban
+                    else {
                         yaCell.textContent = '-';
                         tidakCell.textContent = '-';
                     }
@@ -436,9 +444,9 @@
             // Set all answers (q1 to q14)
             for (let i = 1; i <= 14; i++) {
                 const answer = params[`q${i}`];
-                if (answer) {
-                    setAnswer(i, decodeURIComponent(answer));
-                }
+                // Process even if empty (empty means no checkmark)
+                console.log(`q${i}: "${answer}" (decoded: "${decodeURIComponent(answer || '')}")`); // Debug log
+                setAnswer(i, answer || '');
             }
             
             // Function to setup QR code with signature data
