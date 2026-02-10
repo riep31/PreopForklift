@@ -189,7 +189,7 @@
                 <tbody>
                     <tr>
                         <td rowspan="5" style="text-align: center; vertical-align: middle;">
-                             <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYyanHkNjy-MEGWx-yRWA8XiFF9HbWiLoGFY9HRkEpuBXKYGjxU_TMW2dK4ONcqKA4tg&usqp=CAU' width='100' height='60' style='margin-right: 10px; padding: 1px;'>
+                             <img src='https://cdn.jsdelivr.net/gh/riep31/assets@main/logos/logodagsap1080x572.png' width='140' height='80' style='margin-right: 10px; padding: 1px;'>
                              <div class="company-name">PT.DAGSAP ENDURA EATORE</div>
                         </td>
                         <td rowspan="5" style="text-align: center; vertical-align: middle; font-size: 22px; font-weight: bold; color: #333;">
@@ -426,14 +426,20 @@
                     // Cek apakah jawaban adalah centang (✔️) atau mengandung kata "ya"
                     if (decodedAnswer === '✔️' || decodedAnswer === '✔' || decodedAnswer.toLowerCase() === 'ya') {
                         yaCell.textContent = '✔️';
-                        tidakCell.textContent = '-';
+                        tidakCell.textContent = ''; // Kosong, bukan "-"
                     } 
-                    // Cek apakah jawaban adalah silang (✖) atau mengandung kata "tidak"
-                    else if (decodedAnswer === '✖' || decodedAnswer === 'X' || decodedAnswer === 'x' || decodedAnswer.toLowerCase() === 'tidak') {
-                        yaCell.textContent = '-';
+                    // Cek apakah jawaban adalah silang (berbagai jenis X)
+                    // Termasuk: ✖, X, x, Х (Cyrillic X - %D0%A5), ×, atau kata "tidak"
+                    else if (decodedAnswer === '✖' || 
+                             decodedAnswer === 'X' || 
+                             decodedAnswer === 'x' || 
+                             decodedAnswer === 'Х' ||  // Cyrillic X
+                             decodedAnswer === '×' ||  // Multiplication sign
+                             decodedAnswer.toLowerCase() === 'tidak') {
+                        yaCell.textContent = ''; // Kosong, bukan "-"
                         tidakCell.textContent = '✖';
                     } 
-                    // Jika kosong atau tidak ada jawaban
+                    // Jika kosong atau tidak ada jawaban (blank dari URL)
                     else {
                         yaCell.textContent = '-';
                         tidakCell.textContent = '-';
